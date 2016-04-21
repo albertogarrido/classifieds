@@ -3,4 +3,6 @@
     <string name="welcome_msg">Welcome to the classifieds site!</string>
     <string name="go_to_listing">Go to listing</string>
     <string name="error_image_not_found">Image not found</string>
+    <string name="categories_list_header">I am interested in:</string>
+    <string name="categories">Categories</string>
 </resources>

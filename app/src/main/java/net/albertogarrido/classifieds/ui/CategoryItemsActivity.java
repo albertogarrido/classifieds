@@ -7,6 +7,8 @@ import net.albertogarrido.classifieds.R;
 
 public class CategoryItemsActivity extends AppCompatActivity {
 
+    public static final String CATEGORY_NAME = "category_name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
