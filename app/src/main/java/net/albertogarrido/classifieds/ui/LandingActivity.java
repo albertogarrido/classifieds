@@ -86,7 +86,7 @@ public class LandingActivity extends ClassifiedsActivity implements LandingPrese
 
     @Override
     public void configureToolbar() {
-        //do nothing
+        //do nothing because we don't need the up button here
     }
 
     @Override
