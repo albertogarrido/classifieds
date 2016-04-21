@@ -5,4 +5,5 @@
     <string name="error_image_not_found">Image not found</string>
     <string name="categories_list_header">I am interested in:</string>
     <string name="categories">Categories</string>
+    <string name="results_of">Results of</string>
 </resources>
