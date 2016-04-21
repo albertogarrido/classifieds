@@ -56,7 +56,8 @@ public class LandingInteractor implements ILandingInteractor {
                 Parameters.CX_CODE,
                 Parameters.SEARCH_TYPE,
                 category,
-                1
+                1,
+                Parameters.DEFAULT_IMAGE_SIZE
         );
 
         // FIXME: 4/21/16 this subscription it's not (shouldn't be) necessary now

@@ -40,7 +40,8 @@ public class CategoryItemsInteractor implements ICategoryItemsInteractor{
                 Parameters.CX_CODE,
                 Parameters.SEARCH_TYPE,
                 selectedCategory,
-                start
+                start,
+                Parameters.DEFAULT_IMAGE_SIZE
         );
 
         googleImagesObservable

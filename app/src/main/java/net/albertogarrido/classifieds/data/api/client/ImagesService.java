@@ -27,7 +27,8 @@ public interface ImagesService {
             @Query("cx") String cx,
             @Query("searchType") String searchType,
             @Query("q") String q,
-            @Query("start") Integer start
+            @Query("start") Integer start,
+            @Query("imgSize") String imgSize
     );
 
     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC);

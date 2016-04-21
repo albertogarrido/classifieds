@@ -47,7 +47,8 @@ public class CategoriesInteractor implements ICategoriesInteractor {
                     Parameters.CX_CODE,
                     Parameters.SEARCH_TYPE,
                     Parameters.CATEGORIES[i],
-                    1
+                    1,
+                    Parameters.DEFAULT_IMAGE_SIZE
             );
             googleImagesCall
                     .subscribeOn(Schedulers.io())
