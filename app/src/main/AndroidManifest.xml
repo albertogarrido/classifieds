@@ -2,6 +2,7 @@
 <manifest package="net.albertogarrido.classifieds"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".ClassifiedsApplication"
         android:allowBackup="true"
