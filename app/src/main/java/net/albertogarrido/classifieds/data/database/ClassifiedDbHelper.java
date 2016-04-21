@@ -237,6 +237,5 @@ public class ClassifiedDbHelper extends SQLiteOpenHelper {
 
     private void closeDb(Cursor cursor, SQLiteDatabase db) {
         cursor.close();
-//        db.close();
     }
 }
