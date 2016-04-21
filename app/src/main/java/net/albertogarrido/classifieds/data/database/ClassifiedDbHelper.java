@@ -184,15 +184,23 @@ public class ClassifiedDbHelper extends SQLiteOpenHelper {
 
                 int resultCount = cursor.getCount();
                 int newVisitedValue;
-
+                ContentValues values = new ContentValues();
+                values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_CATEGORY_NAME, categoryName);
                 if(resultCount < 1){
-                    newVisitedValue = insertCategory(db, categoryName, 1);
+                    values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_VISITED_TIMES, 1);
+                    newVisitedValue = insertTrack(db, values, ClassifiedContract.CategoryEntry.TABLE_NAME);
                 } else {
                     cursor.moveToFirst();
                     int currentVisitedValue = cursor.getInt(
                             cursor.getColumnIndex(ClassifiedContract.CategoryEntry.COLUMN_NAME_VISITED_TIMES)
                     );
-                    newVisitedValue = updateCategory(db, categoryName, currentVisitedValue + 1);
+                    values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_VISITED_TIMES, currentVisitedValue+1);
+                    String whereClauseUpdate = ClassifiedContract.CategoryEntry.COLUMN_NAME_CATEGORY_NAME + "=?";
+                    String[] whereValuesUpdate = { categoryName };
+                    newVisitedValue = updateTrack(
+                            db, values, whereClauseUpdate, whereValuesUpdate, ClassifiedContract.CategoryEntry.TABLE_NAME
+                    );
+                    if(newVisitedValue > 0) newVisitedValue = currentVisitedValue+1;
 
                 }
                 closeDb(cursor, db);
@@ -201,41 +209,86 @@ public class ClassifiedDbHelper extends SQLiteOpenHelper {
         };
     }
 
-
-    private int updateCategory(SQLiteDatabase db, String categoryName, int newVisitedValue) {
-        ContentValues values = new ContentValues();
-        values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_CATEGORY_NAME, categoryName);
-        values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_VISITED_TIMES, newVisitedValue);
-
-        String whereClause = ClassifiedContract.CategoryEntry.COLUMN_NAME_CATEGORY_NAME + "=?";
-        String[] whereValues = { categoryName };
-
+    private int updateTrack(SQLiteDatabase db,ContentValues contentValues, String whereClause,
+                            String[] whereValues, String table) {
         int rowsAffected = db.update(
-                ClassifiedContract.CategoryEntry.TABLE_NAME, // table
-                values,
+                table,
+                contentValues,
                 whereClause,
                 whereValues
         );
 
         if(rowsAffected != 1) return -1;
-        return newVisitedValue;
+        return rowsAffected;
     }
 
-    private int insertCategory(SQLiteDatabase db, String categoryName, int value) {
-        ContentValues values = new ContentValues();
-        values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_CATEGORY_NAME, categoryName);
-        values.put(ClassifiedContract.CategoryEntry.COLUMN_NAME_VISITED_TIMES, value);
-
+    private int insertTrack(SQLiteDatabase db, ContentValues contentValues, String table) {
         long newRowId;
         newRowId = db.insert(
-                ClassifiedContract.CategoryEntry.TABLE_NAME,
+                table,
                 null,
-                values);
-        if(newRowId > -1) return value;
+                contentValues);
+        if(newRowId > -1) return 1;
         return (int) newRowId;
     }
 
     private void closeDb(Cursor cursor, SQLiteDatabase db) {
         cursor.close();
+    }
+
+    public Observable<Integer> trackClickOnItem(String fullSizeLink) {
+        return makeObservable(
+                trackClickOnItem(getReadableDatabase(), fullSizeLink))
+                .subscribeOn(Schedulers.io()
+                );
+    }
+
+    private Callable<Integer> trackClickOnItem(final SQLiteDatabase db, final String fullSizeLink) {
+        return new Callable<Integer>() {
+            @Override
+            public Integer call() {
+                String[] projection = {
+                        ClassifiedContract.ImagesEntry.COLUMN_NAME_IMAGE_LINK,
+                        ClassifiedContract.ImagesEntry.COLUMN_NAME_VISITED_TIMES
+                };
+
+                String whereClause = ClassifiedContract.ImagesEntry.COLUMN_NAME_IMAGE_LINK + " = ? ";
+                String[] whereValues = new String[]{ fullSizeLink };
+
+                Cursor cursor = db.query(
+                        ClassifiedContract.ImagesEntry.TABLE_NAME,                    // table
+                        projection,                                                     // columns to query
+                        whereClause,                                                      // where cols
+                        whereValues,                                                    // where values
+                        null,                                                           // group
+                        null,                                                           // filter
+                        null                                                            // sort
+                );
+
+                int resultCount = cursor.getCount();
+                int newVisitedValue;
+                ContentValues values = new ContentValues();
+                values.put(ClassifiedContract.ImagesEntry.COLUMN_NAME_IMAGE_LINK, fullSizeLink);
+                if(resultCount < 1){
+                    values.put(ClassifiedContract.ImagesEntry.COLUMN_NAME_VISITED_TIMES, 1);
+                    newVisitedValue = insertTrack(db, values, ClassifiedContract.ImagesEntry.TABLE_NAME);
+                } else {
+                    cursor.moveToFirst();
+                    int currentVisitedValue = cursor.getInt(
+                            cursor.getColumnIndex(ClassifiedContract.ImagesEntry.COLUMN_NAME_VISITED_TIMES)
+                    );
+                    values.put(ClassifiedContract.ImagesEntry.COLUMN_NAME_VISITED_TIMES, currentVisitedValue+1);
+                    String whereClauseUpdate = ClassifiedContract.ImagesEntry.COLUMN_NAME_IMAGE_LINK + "=?";
+                    String[] whereValuesUpdate = { fullSizeLink };
+                    newVisitedValue = updateTrack(
+                            db, values, whereClauseUpdate, whereValuesUpdate, ClassifiedContract.ImagesEntry.TABLE_NAME
+                    );
+                    if(newVisitedValue > 0) newVisitedValue = currentVisitedValue+1;
+
+                }
+                closeDb(cursor, db);
+                return newVisitedValue;
+            }
+        };
     }
 }

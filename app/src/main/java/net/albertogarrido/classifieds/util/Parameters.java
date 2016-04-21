@@ -32,5 +32,5 @@ public class Parameters {
      * "xlarge": xlarge
      * "xxlarge": xxlarge
      */
-    public static final String DEFAULT_IMAGE_SIZE = "medium";
+    public static final String DEFAULT_IMAGE_SIZE = "large";
 }

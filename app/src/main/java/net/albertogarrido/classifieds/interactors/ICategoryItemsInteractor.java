@@ -10,6 +10,8 @@ import java.util.List;
 public interface ICategoryItemsInteractor {
     void getCategoryItems(String selectedCategory, OnCategoryItemsResultsListener listener, Integer start);
 
+    void trackClickOnItem(String fullSizeLink, OnCategoryItemsResultsListener categoryItemsPresenter);
+
     interface OnCategoryItemsResultsListener extends MainListener {
 
         void onCategoryItemsReceived(List<GoogleImage> images);

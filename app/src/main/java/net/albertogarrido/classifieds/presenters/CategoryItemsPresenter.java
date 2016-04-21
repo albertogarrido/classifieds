@@ -54,6 +54,7 @@ public class CategoryItemsPresenter implements ICategoryItemsPresenter, ICategor
 
     @Override
     public void onItemSelected(GoogleImage googleImageItem) {
+        interactor.trackClickOnItem(googleImageItem.getFullSizeLink(), this);
         view.startItemDetail(googleImageItem);
     }
 
