@@ -7,7 +7,7 @@ import net.albertogarrido.classifieds.data.api.client.ImagesService;
 import net.albertogarrido.classifieds.data.database.ClassifiedDbHelper;
 import net.albertogarrido.classifieds.data.entities.GoogleImage;
 import net.albertogarrido.classifieds.data.entities.SearchResult;
-import net.albertogarrido.classifieds.util.Parameters;
+import net.albertogarrido.classifieds.util.Config;
 import net.albertogarrido.classifieds.util.Util;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class CategoriesInteractor implements ICategoriesInteractor {
     private static final String TAG = CategoriesInteractor.class.getSimpleName();
 
     private ClassifiedDbHelper classifiedDbHelper;
-    private List<GoogleImage> categoriesList = new ArrayList<>(Parameters.CATEGORIES.length);
+    private List<GoogleImage> categoriesList = new ArrayList<>(Config.CATEGORIES.length);
 
     public CategoriesInteractor(Context context) {
         classifiedDbHelper = new ClassifiedDbHelper(context);
@@ -40,15 +40,15 @@ public class CategoriesInteractor implements ICategoriesInteractor {
     public void fetchCategoriesCovers(final OnCategoriesResultsListener listener) {
         ImagesService imagesService = ImagesService.retrofit.create(ImagesService.class);
 
-        for (int i = 0; i < Parameters.CATEGORIES.length; i++) {
+        for (int i = 0; i < Config.CATEGORIES.length; i++) {
 
             Observable<SearchResult> googleImagesCall = imagesService.getImages(
-                    Parameters.API_KEY, //browser
-                    Parameters.CX_CODE,
-                    Parameters.SEARCH_TYPE,
-                    Parameters.CATEGORIES[i],
+                    Config.API_KEY, //browser
+                    Config.CX_CODE,
+                    Config.SEARCH_TYPE,
+                    Config.CATEGORIES[i],
                     1,
-                    Parameters.DEFAULT_IMAGE_SIZE
+                    Config.DEFAULT_IMAGE_SIZE
             );
             googleImagesCall
                     .subscribeOn(Schedulers.io())
@@ -113,7 +113,7 @@ public class CategoriesInteractor implements ICategoriesInteractor {
 
     private void sendGoogleImagesList(GoogleImage googleImage, OnCategoriesResultsListener listener) {
         categoriesList.add(googleImage);
-        if (categoriesList.size() == Parameters.CATEGORIES.length) {
+        if (categoriesList.size() == Config.CATEGORIES.length) {
             Collections.sort(categoriesList, new Comparator<GoogleImage>() {
                 @Override
                 public int compare(GoogleImage googleImage1, GoogleImage googleImage2) {

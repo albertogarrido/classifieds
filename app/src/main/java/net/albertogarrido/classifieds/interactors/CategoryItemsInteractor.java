@@ -7,7 +7,7 @@ import net.albertogarrido.classifieds.data.api.client.ImagesService;
 import net.albertogarrido.classifieds.data.database.ClassifiedDbHelper;
 import net.albertogarrido.classifieds.data.entities.GoogleImage;
 import net.albertogarrido.classifieds.data.entities.SearchResult;
-import net.albertogarrido.classifieds.util.Parameters;
+import net.albertogarrido.classifieds.util.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +39,12 @@ public class CategoryItemsInteractor implements ICategoryItemsInteractor {
 
         ImagesService imagesService = ImagesService.retrofit.create(ImagesService.class);
         Observable<SearchResult> googleImagesObservable = imagesService.getImages(
-                Parameters.API_KEY, //browser
-                Parameters.CX_CODE,
-                Parameters.SEARCH_TYPE,
+                Config.API_KEY, //browser
+                Config.CX_CODE,
+                Config.SEARCH_TYPE,
                 selectedCategory,
                 start,
-                Parameters.DEFAULT_IMAGE_SIZE
+                Config.DEFAULT_IMAGE_SIZE
         );
 
         googleImagesObservable
